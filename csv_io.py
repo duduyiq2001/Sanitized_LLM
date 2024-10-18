@@ -5,7 +5,7 @@ import pandas as pd
 
 import os
 
-def read_set(set_name: str, num_of_rows: int, offset: int) -> pd.DataFrame:
+def read_set(set_name: str, num_of_rows: int, offset: int, header= True) -> pd.DataFrame:
     """
     Reads a specified number of rows from a CSV file, with an offset.
 
@@ -18,8 +18,12 @@ def read_set(set_name: str, num_of_rows: int, offset: int) -> pd.DataFrame:
         pd.DataFrame: A DataFrame containing the selected rows.
     """
     # Read the CSV file with the specified number of rows and offset
+    
     print(f'{set_name} has {num_of_rows} rows, starting from {offset}')
-    df = pd.read_csv(set_name, skiprows=offset, nrows=num_of_rows)
+    if header == None:
+        df = pd.read_csv(set_name, skiprows=offset, nrows=num_of_rows, header = None)
+    else:
+        df = pd.read_csv(set_name, skiprows=offset, nrows=num_of_rows)
 
     return df
 
