@@ -113,8 +113,8 @@ def main():
         # save or append result to csv
         save_result("result.csv", pd.DataFrame(data=data))
         # update progress
-        print(f'consumed {consumed_rows}, progress: {(consumed_rows*1.0)/(size*1.0)}, current asr{(miss_pred*1.0)/(consumed_rows*1.0)}\n')
+        print(f'consumed {consumed_rows}, progress: {(consumed_rows*1.0)/(size*1.0)}, current asr{(asr*1.0)/(consumed_rows*1.0)}\n')
     # annouce final result
-    print(f'model {model_name} has ASR of {((miss_pred*1.0)/(size*1.0))*100} percent, output in result.csv \n')
+    print(f'model {model_name} has ASR of {((asr*1.0)/(size*1.0))*100} percent, output in result.csv \n')
         
 
