@@ -36,7 +36,7 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
         str: The generated response from the model.
     """
     # Clear GPU cache if using GPU
-    if device >= 0:
+    if device == 'gpu':
         torch.cuda.empty_cache()
 
     # Load the model and tokenizer
@@ -44,19 +44,30 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
     model = AutoModelForCausalLM.from_pretrained(model_name)
 
     # Move model to specified device (GPU or CPU)
-    model.to(f'cuda:{device}' if device >= 0 else 'cpu')
+    if device == 'gpu':
+            # Use DataParallel to utilize all available GPUs
+        if torch.cuda.device_count() > 1:
+            print(f"Using {torch.cuda.device_count()} GPUs")
+            model = torch.nn.DataParallel(model)
+
+        # Move the model to GPU (will automatically use all GPUs)
+        model.to('cuda')
+    else:
+        model.to('cpu')
 
     # Combine system prompt and question
     full_prompt = system_prompt + "\n\n" + "User: " + question + "\nYour response:"
 
     # Tokenize the input text
-    inputs = tokenizer(full_prompt, return_tensors="pt").to(f'cuda:{device}' if device >= 0 else 'cpu')
+    inputs = tokenizer(full_prompt, return_tensors="pt").to(f'cuda' if device == 'gpu' else 'cpu')
 
     # Generate the output
     outputs = model.generate(inputs['input_ids'], max_length=max_length)
 
     # Decode the generated output
     result = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+    result = result.split("Your response: ")[1]
 
     # Print output if debug is True
     if debug:
