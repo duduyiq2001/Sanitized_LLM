@@ -49,4 +49,4 @@ def get_size(file_name)-> int:
     with open(file_name, 'r') as file:
         reader = csv.reader(file)
         row_count = sum(1 for row in reader)
-    return row_count
+    return row_count-1

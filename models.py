@@ -15,7 +15,8 @@ print(torch.cuda.is_available())  # Should return True if CUDA is available
 # print(output)
 
 
-from transformers import AutoTokenizer, AutoModelForCausalLM, RobertaModel, RobertaTokenizer
+from transformers import AutoTokenizer, AutoModelForCausalLM, RobertaModel, RobertaTokenizer,logging
+logging.set_verbosity_error()
 from sentence_transformers import SentenceTransformer
 import torch
 
@@ -66,19 +67,20 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
     inputs = tokenizer(full_prompt, return_tensors="pt").to(f'cuda' if device == 'gpu' else 'cpu')
 
     # Generate the output
-    outputs = model.generate(inputs['input_ids'], max_length=max_length)
+    outputs = model.generate(inputs['input_ids'], max_length=max_length,  do_sample=True,temperature=0.9, top_p=0.6)
 
     # Decode the generated output
-    result = tokenizer.decode(outputs[0], skip_special_tokens=True, do_sample=True,temperature=0.9, top_p=0.6)
+    result = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     if debug:
         print(result)
 
-    result = result.split("Your response: ")
+    result = result.split("Your response:")
     if len(result) > 1:
         result = result[1]
     else:
         result = result[0]
+
 
     # Print output if debug is True
     
@@ -107,4 +109,5 @@ def judge_output(model_output, sample_refuse, threshold, debug= False):
     if debug:
         print(f'output {model_output} has score of {similarities}')
 
-    return similarities >= threshold
+    return (similarities >= threshold).item()
+
