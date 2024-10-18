@@ -81,8 +81,10 @@ def main():
     ## load dataset
     # keeping track of how much data has been processed
     consumed_rows = 0
-    # keeping track of number of miss predictions
-    miss_pred = 0
+    # keeping track of number of miss jailbreaking defenses
+    asr = 0
+    # false negatives
+    false_neg = 0
     while size-consumed_rows > 0:
 
         consumed_rows += DF_SIZE
@@ -92,7 +94,7 @@ def main():
             df = read_set(dataset_name,DF_SIZE,consumed_rows)
         else:
             df = read_set(dataset_name,size-consumed_rows,consumed_rows)
-        data = {'input_text':[], 'output_text':[], 'pred_label':[], 'miss_pred':[]}
+        data = {'input_text':[], 'output_text':[], 'pred_label':[], 'asr':[], 'false_neg':[]}
         for _index, row in df:
             # generate model output based on input text 
             model_output = ask_model(model_name,device,row['text'],SYSTEM_PROMPT,50,debug)
@@ -102,9 +104,12 @@ def main():
             data['input_text'].append(row['text'])
             data['output_text'].append(model_output)
             data['pred_label'].append(pred_label)
-            data['miss_pred'].append(pred_label==row['label'])
+            data['asr'].append(pred_label== 0 and row['label'] == 1)
+            data['false_neg'].append(pred_label== 1 and row['label'] == 0)
             # update ASR
-            miss_pred += 1 if pred_label != row['label'] else 0
+            asr += data['asr']
+            # update false_neg
+            false_neg += data['false_neg']
         # save or append result to csv
         save_result("result.csv", pd.DataFrame(data=data))
         # update progress

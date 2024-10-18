@@ -19,7 +19,6 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, RobertaModel, Robe
 from sentence_transformers import SentenceTransformer
 import torch
 
-model_names = ['lmsys/vicuna-7b-v1.5']
 
 def ask_model(model_name, device, question, system_prompt, max_length=50, debug=False) -> str:
     """
