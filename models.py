@@ -35,6 +35,8 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
     Returns:
         str: The generated response from the model.
     """
+
+   
     # Clear GPU cache if using GPU
     if device == 'gpu':
         torch.cuda.empty_cache()
@@ -57,6 +59,8 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
 
     # Combine system prompt and question
     full_prompt = system_prompt + "\n\n" + "User: " + question + "\nYour response:"
+    if debug:
+        print(f'query {model_name} on {device} with question {full_prompt}')
 
     # Tokenize the input text
     inputs = tokenizer(full_prompt, return_tensors="pt").to(f'cuda' if device == 'gpu' else 'cpu')
@@ -65,19 +69,25 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
     outputs = model.generate(inputs['input_ids'], max_length=max_length)
 
     # Decode the generated output
-    result = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    result = tokenizer.decode(outputs[0], skip_special_tokens=True, do_sample=True,temperature=0.9, top_p=0.6)
 
-    result = result.split("Your response: ")[1]
-
-    # Print output if debug is True
     if debug:
         print(result)
+
+    result = result.split("Your response: ")
+    if len(result) > 1:
+        result = result[1]
+    else:
+        result = result[0]
+
+    # Print output if debug is True
+    
 
     return result
 
 
 
-def judge_output(model_output, sample_refuse, threshold):
+def judge_output(model_output, sample_refuse, threshold, debug= False):
 
     '''
     return true if the model rejects the user request
@@ -92,6 +102,9 @@ def judge_output(model_output, sample_refuse, threshold):
     embeddings = model.encode(sentences)
 
     # Cosine similarity can be calculated between these embeddings
-    similarities = model.similarity(embeddings, embeddings)
+    similarities = model.similarity(embeddings, embeddings)[0][1]
+
+    if debug:
+        print(f'output {model_output} has score of {similarities}')
 
     return similarities >= threshold
