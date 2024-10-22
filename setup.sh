@@ -17,6 +17,8 @@ pip install torch  # Assuming you'll use PyTorch on the H100
 pip install sentencepiece  # Needed for LLaMA models
 pip install pandas  # If you're working with CSVs
 pip install accelerate  # For multi-GPU support and optimization
+pip install -U sentence-transformers
+pip install tf-keras
 
 # Optional: Install any other libraries you might need based on your project
 # For example, if you need extra libraries, you can add them here

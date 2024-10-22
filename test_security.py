@@ -29,21 +29,21 @@ def get_user_choice(prompt_text, options):
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
-def main():
 
 
-    # Prompt the user to select a model, dataset, and device
-    model_name = get_user_choice("Please choose a model:", model_names)
-    dataset_name = get_user_choice("Please choose a dataset:", dataset_names)
-    device = get_user_choice("Please choose a device (gpu/cpu):", devices)
 
-    # Ask for max_length and debug flag
-    max_length = int(input("Enter the maximum length for generation (e.g., 50): "))
-    debug_input = input("Enable debug mode? (yes/no): ").strip().lower()
-    debug = debug_input == 'yes'
-    user_input = input ("Now provide a test input: ")
+# Prompt the user to select a model, dataset, and device
+model_name = get_user_choice("Please choose a model:", model_names)
+dataset_name = get_user_choice("Please choose a dataset:", dataset_names)
+device = get_user_choice("Please choose a device (gpu/cpu):", devices)
 
-    # Print the selected options for confirmation
-    print(f"\nYou have selected:\nModel: {model_name}\nDataset: {dataset_name}\nDevice: {device}\nMax Length: {max_length}\nDebug Mode: {debug}")
+# Ask for max_length and debug flag
+max_length = int(input("Enter the maximum length for generation (e.g., 50): "))
+debug_input = input("Enable debug mode? (yes/no): ").strip().lower()
+debug = debug_input == 'yes'
+user_input = input ("Now provide a test input: ")
 
-    print(isolate_user_requests(model_name,device,user_input,max_length,debug,2,1))
+# Print the selected options for confirmation
+print(f"\nYou have selected:\nModel: {model_name}\nDataset: {dataset_name}\nDevice: {device}\nMax Length: {max_length}\nDebug Mode: {debug}")
+
+print(isolate_user_requests(model_name,device,user_input,max_length,debug,2,1))
