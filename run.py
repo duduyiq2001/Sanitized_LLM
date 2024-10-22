@@ -1,7 +1,7 @@
 ## run this file to run the experiment
 from models import *
 from csv_io import *
-
+from model_security import *
 
 
 DF_SIZE = 2
@@ -74,7 +74,8 @@ def main():
     model_name = get_user_choice("Please choose a model:", model_names)
     dataset_name = get_user_choice("Please choose a dataset:", dataset_names)
     device = get_user_choice("Please choose a device (gpu/cpu):", devices)
-
+    if_security = input("Do you want to enable security?, (yes/no): ").strip().lower()
+    if_security = if_security == 'yes'
     # Ask for max_length and debug flag
     max_length = int(input("Enter the maximum length for generation (e.g., 50): "))
     debug_input = input("Enable debug mode? (yes/no): ").strip().lower()
@@ -111,7 +112,9 @@ def main():
         for _index, row in df.iterrows():
             # generate model output based on input text 
             input_size = len(row['text'])
-            model_output = ask_model(model_name,device,row['text'],SYSTEM_PROMPT,input_size+max_length + len(SYSTEM_PROMPT),debug)
+            if if_security:
+                model_output = isolate_user_requests(model_name,device,row['text'],max_length,debug,2,1)
+            model_output = ask_model(model_name,device,row['text'],SYSTEM_PROMPT,max_length,debug)
             # determine label based on cosine similarity
             # pred_label = judge_output(model_output,SAMPLE_REFUSE,THRESHOLD,debug)
             pred_label = judge_1(model_output,debug)
