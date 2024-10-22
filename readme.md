@@ -1,4 +1,4 @@
-    Securing Large language models against prompt injection
+## Securing Large language models against prompt injection
 
 ### Background and Context:
 
