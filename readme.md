@@ -1,4 +1,4 @@
-    Securing Large language models against prompt injection
+## Securing Large language models against prompt injection
 
 ### Background and Context:
 
@@ -38,11 +38,11 @@ We noticed several issues that exists in the source datasets from huggingface:
 
 Therefore we preprocessed them before adding them to our dataset.
 
-###### The experiment setup
+##### The experiment setup
 
 The most pressing and challenging issues is the lack of free cloud gpu resources where we can conduct our expeirment given the amount of computation to run LLMs over large datasets, as a single Vicuna inference would take at least two minutes on my local desktop equipped with RTX2070 SUPER, let alone the amount of storage needed to install all the tool to run the LLMs. Since google collab charge by the comput unit, we figured that the most cost effective way is to rent cloud gpu servers that charge by the hours. We ended up using a H100 instance on lambada labs.
 
-###### How to run the experiment
+##### How to run the experiment
 
 In this repository we built a configurable benchmarking tool to test both ASR and false positives of prompt injection attacks on different LLM models. To run the experiment, you will need to :
 
