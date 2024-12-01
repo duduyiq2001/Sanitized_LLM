@@ -114,7 +114,8 @@ def main():
             input_size = len(row['text'])
             if if_security:
                 model_output = isolate_user_requests(model_name,device,row['text'],max_length,debug,2,1)
-            model_output = ask_model(model_name,device,row['text'],SYSTEM_PROMPT,max_length,debug)
+            else:
+                model_output = ask_model(model_name,device,row['text'],SYSTEM_PROMPT,max_length,debug)
             # determine label based on cosine similarity
             # pred_label = judge_output(model_output,SAMPLE_REFUSE,THRESHOLD,debug)
             if if_security:
