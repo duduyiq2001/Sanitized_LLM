@@ -117,7 +117,10 @@ def main():
             model_output = ask_model(model_name,device,row['text'],SYSTEM_PROMPT,max_length,debug)
             # determine label based on cosine similarity
             # pred_label = judge_output(model_output,SAMPLE_REFUSE,THRESHOLD,debug)
-            pred_label = judge_1(model_output,debug)
+            if if_security:
+                pred_label = judge_2(model_output,debug)
+            else:
+                pred_label = judge_1(model_output,debug)
             # convert to int
             pred_label = 1 if pred_label==True else 0
             # update data
