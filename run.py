@@ -106,6 +106,7 @@ def main():
         else:
             # For subsequent chunks, we need to specify the column names manually
             df = read_set(dataset_name, min(DF_SIZE,size-consumed_rows) ,consumed_rows, header=None)
+            print("Current columns:", df.columns.tolist())
             df.columns = ['text', 'label']  # Replace with your actual column names
 
         data = {'input_text':[], 'output_text':[], 'pred_label':[], 'asr':[], 'false_neg':[]}
