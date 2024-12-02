@@ -81,7 +81,7 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
     else:
         result = result[0]
     #result = result.lstrip("\n")
-    result = lstrip_all(result)
+    #result = lstrip_all(result)
 
     # Print output if debug is True
     
@@ -148,7 +148,7 @@ def ask_model1(model_name, device, question, system_prompt, max_length=50, debug
     else:
         result = result[0]
     #result = result.lstrip("\n")
-    result = lstrip_all(result)
+    #result = lstrip_all(result)
 
     # Print output if debug is True
     
