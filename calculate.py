@@ -43,7 +43,7 @@ def calculate_rates(csv_path):
 
 def main():
     # You can modify the CSV path here
-    csv_path = 'result_sec_fixed.csv'
+    csv_path = 'result_358_vicuna.csv'
     
     try:
         fnr, asr, stats = calculate_rates(csv_path)

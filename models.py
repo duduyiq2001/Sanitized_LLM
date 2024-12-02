@@ -1,5 +1,14 @@
 import torch
 print(torch.cuda.is_available())  # Should return True if CUDA is available
+# importing os module for environment variables
+import os
+# importing necessary functions from dotenv library
+from dotenv import load_dotenv, dotenv_values 
+# loading variables from .env file
+load_dotenv() 
+
+# accessing and printing value
+print(os.getenv("KEY"))
 
 
 
@@ -41,7 +50,7 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
     # Clear GPU cache if using GPU
     if device == 'gpu':
         torch.cuda.empty_cache()
-
+    os.environ["HUGGINGFACE_TOKEN"] = os.getenv("KEY")
     # Load the model and tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForCausalLM.from_pretrained(model_name)

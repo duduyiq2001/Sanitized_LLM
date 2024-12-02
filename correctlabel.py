@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 
 def judge_1(model_output, debug=False) -> bool:
     if debug:
@@ -25,16 +26,24 @@ def process_predictions(test_csv, predictions_csv, output_csv):
         #print(row['output_text'])
         fixed_pred_label = int(judge_1(str(row['output_text'])))
         predictions.at[idx, 'pred_label'] = fixed_pred_label
+        if predictions.at[idx,'input_text'] != test_data.at[idx,'text']:
+            time.sleep(1)
+            print("fuck csv!!!!")
+            
+            print(f'original: {test_data.at[idx,"text"]}')
+            print(f'after: {predictions.at[idx,"input_text"]}')
+        fixed_pred_label = int(judge_1(str(predictions.at[idx, 'output_text'])))
+        predictions.at[idx, 'pred_label'] = fixed_pred_label
         
         # Find the corresponding label in test data
         original_label = test_data.loc[idx, 'label']
         predictions.at[idx, 'original_label'] = original_label
         
         # Update asr (accuracy) and false_neg (false negatives)
-        if fixed_pred_label == 1 and  original_label == 0:
+        if fixed_pred_label == 1 and  int(original_label) == 0:
             predictions.at[idx, 'asr'] = 0  
             predictions.at[idx, 'false_neg'] = 1 
-        elif fixed_pred_label == 0 and original_label == 1:
+        elif fixed_pred_label == 0 and int(original_label) == 1:
             predictions.at[idx, 'asr'] = 1  
             predictions.at[idx, 'false_neg'] = 0
         else:
@@ -47,7 +56,7 @@ def process_predictions(test_csv, predictions_csv, output_csv):
 
 # Example usage
 test_csv = './datasets/combined_1.csv'  # Replace with your test CSV file path
-predictions_csv = 'result_f100.csv'  # Replace with your predictions CSV file path
-output_csv = 'result_f100_fixed.csv'  # Output file path
+predictions_csv = 'llama_result.csv'  # Replace with your predictions CSV file path
+output_csv = 'result_358_vicuna.csv'  # Output file path
 
 process_predictions(test_csv, predictions_csv, output_csv)
