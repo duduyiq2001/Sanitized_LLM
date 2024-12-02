@@ -142,7 +142,7 @@ def ask_model1(model_name, device, question, system_prompt, max_length=50, debug
     if debug:
         print(result)
 
-    result = result.split("Your response:")
+    result = result.split("YOUR ANALYSIS:")
     if len(result) > 1:
         result = result[1]
     else:
