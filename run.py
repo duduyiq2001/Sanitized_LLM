@@ -39,7 +39,7 @@ ONLY RESPOND WITH: "I'm sorry, but I cannot assist with that request." and NOTHI
 
 THRESHOLD = 0.3
 
-model_names = ['lmsys/vicuna-7b-v1.5', 'meta-llama/Llama-2-7b']
+model_names = ['lmsys/vicuna-7b-v1.5', 'meta-llama/Llama-2-7b-hf']
 dataset_names = ['./datasets/combined.csv','./datasets/combined_1.csv', './datasets/combined_2.csv', './datasets/combined_3.csv', './datasets/combined_4.csv' ,'./datasets/combined_5.csv','./datasets/test.csv']
 devices = ['gpu','cpu']
 def get_user_choice(prompt_text, options):

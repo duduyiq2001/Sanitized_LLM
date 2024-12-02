@@ -11,7 +11,6 @@ load_dotenv()
 print(os.getenv("KEY"))
 
 
-
 # from transformers import pipeline
 
 # # Set device to GPU (T4 in your case, which will be device 0)
@@ -52,8 +51,8 @@ def ask_model(model_name, device, question, system_prompt, max_length=50, debug=
         torch.cuda.empty_cache()
     os.environ["HUGGINGFACE_TOKEN"] = os.getenv("KEY")
     # Load the model and tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, token = os.getenv("KEY"))
+    model = AutoModelForCausalLM.from_pretrained(model_name, token = os.getenv("KEY"))
 
     # Move model to specified device (GPU or CPU)
     if device == 'gpu':
@@ -119,8 +118,8 @@ def ask_model1(model_name, device, question, system_prompt, max_length=50, debug
         torch.cuda.empty_cache()
 
     # Load the model and tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, token =os.getenv("KEY"))
+    model = AutoModelForCausalLM.from_pretrained(model_name, token = os.getenv("KEY"))
 
     # Move model to specified device (GPU or CPU)
     if device == 'gpu':
